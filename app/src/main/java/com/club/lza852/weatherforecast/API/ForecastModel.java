@@ -450,14 +450,14 @@ public class ForecastModel {
                  * datetime : 2017-01-15 23:00
                  */
 
-                private int value;
+                private float value;
                 private String datetime;
 
-                public int getValue() {
+                public float getValue() {
                     return value;
                 }
 
-                public void setValue(int value) {
+                public void setValue(float value) {
                     this.value = value;
                 }
 
@@ -728,7 +728,7 @@ public class ForecastModel {
 
                 private String date;
                 private double max;
-                private int avg;
+                private float avg;
                 private double min;
 
                 public String getDate() {
@@ -747,11 +747,11 @@ public class ForecastModel {
                     this.max = max;
                 }
 
-                public int getAvg() {
+                public float getAvg() {
                     return avg;
                 }
 
-                public void setAvg(int avg) {
+                public void setAvg(float avg) {
                     this.avg = avg;
                 }
 
@@ -799,7 +799,7 @@ public class ForecastModel {
                  */
 
                 private String date;
-                private int max;
+                private double max;
                 private double avg;
                 private double min;
 
@@ -811,11 +811,11 @@ public class ForecastModel {
                     this.date = date;
                 }
 
-                public int getMax() {
+                public double getMax() {
                     return max;
                 }
 
-                public void setMax(int max) {
+                public void setMax(double max) {
                     this.max = max;
                 }
 
@@ -846,7 +846,7 @@ public class ForecastModel {
 
                 private String date;
                 private int max;
-                private int avg;
+                private double avg;
                 private int min;
 
                 public String getDate() {
@@ -865,11 +865,11 @@ public class ForecastModel {
                     this.max = max;
                 }
 
-                public int getAvg() {
+                public double getAvg() {
                     return avg;
                 }
 
-                public void setAvg(int avg) {
+                public void setAvg(double avg) {
                     this.avg = avg;
                 }
 
@@ -1042,7 +1042,7 @@ public class ForecastModel {
 
                 private String date;
                 private int max;
-                private int avg;
+                private double avg;
                 private int min;
 
                 public String getDate() {
@@ -1061,11 +1061,11 @@ public class ForecastModel {
                     this.max = max;
                 }
 
-                public int getAvg() {
+                public double getAvg() {
                     return avg;
                 }
 
-                public void setAvg(int avg) {
+                public void setAvg(double avg) {
                     this.avg = avg;
                 }
 
@@ -1159,9 +1159,9 @@ public class ForecastModel {
                  */
 
                 private String date;
-                private int max;
-                private int avg;
-                private int min;
+                private double max;
+                private double avg;
+                private double min;
 
                 public String getDate() {
                     return date;
@@ -1171,27 +1171,27 @@ public class ForecastModel {
                     this.date = date;
                 }
 
-                public int getMax() {
+                public double getMax() {
                     return max;
                 }
 
-                public void setMax(int max) {
+                public void setMax(double max) {
                     this.max = max;
                 }
 
-                public int getAvg() {
+                public double getAvg() {
                     return avg;
                 }
 
-                public void setAvg(int avg) {
+                public void setAvg(double avg) {
                     this.avg = avg;
                 }
 
-                public int getMin() {
+                public double getMin() {
                     return min;
                 }
 
-                public void setMin(int min) {
+                public void setMin(double min) {
                     this.min = min;
                 }
             }

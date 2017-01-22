@@ -12,21 +12,18 @@ import retrofit2.http.Path;
 
 public class WeatherInterface {
 
-    //天气预报token
-    private static String wftoken = "H7jLXvax2F=x=AFW";
-    private static String lokey = "e998272a2c9692254075af57b88ce157";
 
     //实时天气接口
     public static interface mRealTimeInterface {
         @GET("/v2/{token}/{location}/realtime.json")
-        Call<List<RealTimeModel>> getRealTimeInfo(@Path("token") String token, @Path("location") String location);
+        Call<RealTimeModel> getRealTimeInfo(@Path("token") String token, @Path("location") String location);
     }
 
     //天气预报接口
     public static interface mForecastInterface{
         @GET("/v2/{token}/{location}/forecast.json")
-        Call<List<ForecastModel>> getForecastInfo(@Path("token") String token, @Path("location") String location);
+        Call<ForecastModel> getForecastInfo(@Path("token") String token, @Path("location") String location);
     }
 
-    //高德定位接口
+    //高德定位接口                                                                               
 }
