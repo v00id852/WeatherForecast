@@ -1,3 +1,5 @@
 <resources>
     <string name="app_name">WeatherForecast</string>
+    <string name="temperature_button">温度</string>
+    <string name="humidity_button">湿度</string>
 </resources>

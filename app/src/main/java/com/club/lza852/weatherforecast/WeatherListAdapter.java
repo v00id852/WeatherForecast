@@ -5,16 +5,30 @@ import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.support.annotation.RequiresApi;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.club.lza852.weatherforecast.API.ForecastModel;
 import com.github.mikephil.charting.charts.LineChart;
+import com.github.mikephil.charting.components.AxisBase;
+import com.github.mikephil.charting.components.Description;
+import com.github.mikephil.charting.components.Legend;
+import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
+import com.github.mikephil.charting.data.Entry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IValueFormatter;
+import com.github.mikephil.charting.formatter.PercentFormatter;
+import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
+import com.github.mikephil.charting.utils.ViewPortHandler;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -131,8 +145,9 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
     }
 
 
+
     @Override
-    public void onBindViewHolder(RecyclerView.ViewHolder holder, int position) {
+    public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
         //五天天气预报view
         if (holder instanceof FiveDaysItem){
@@ -174,12 +189,171 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
                 ((FiveDaysItem) holder).mFiveDayImg.setImageDrawable(string2WeatherDrawable(mForecastModel.getResult().getDaily().getSkycon().get(4).getValue()));
             }
 
+            //温度图表切换按钮 2017-1-23
+            ((FiveDaysItem) holder).mTempButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //设置格式
+                    ((FiveDaysItem) holder).mTempButton.setTextColor(ContextCompat.getColor(mContext,R.color.colorButtonFontSelected));
+                    ((FiveDaysItem) holder).mTempButton.setBackgroundColor(ContextCompat.getColor(mContext,R.color.colorButtonSelected));
+                    ((FiveDaysItem) holder).mHumiButton.setTextColor(ContextCompat.getColor(mContext,R.color.colorButtonFontUnselected));
+                    ((FiveDaysItem) holder).mHumiButton.setBackgroundColor(ContextCompat.getColor(mContext,R.color.colorButtonUnselected));
+                    //阻止重复点击
+                    ((FiveDaysItem) holder).mTempButton.setClickable(false);
+                    ((FiveDaysItem) holder).mHumiButton.setClickable(true);
+                    //更新图表数据
+                    ((FiveDaysItem) holder).mLineChart.setData(makeTempDataSet());
+                    ((FiveDaysItem) holder).mLineChart.invalidate();
+
+                }
+            });
+
+            //湿度图表切换按钮
+            ((FiveDaysItem) holder).mHumiButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    //设置格式
+                    ((FiveDaysItem) holder).mHumiButton.setTextColor(ContextCompat.getColor(mContext,R.color.colorButtonFontSelected));
+                    ((FiveDaysItem) holder).mHumiButton.setBackgroundColor(ContextCompat.getColor(mContext,R.color.colorButtonSelected));
+                    ((FiveDaysItem) holder).mTempButton.setTextColor(ContextCompat.getColor(mContext,R.color.colorButtonFontUnselected));
+                    ((FiveDaysItem) holder).mTempButton.setBackgroundColor(ContextCompat.getColor(mContext,R.color.colorButtonUnselected));
+                    //阻止重复点击
+                    ((FiveDaysItem) holder).mHumiButton.setClickable(false);
+                    ((FiveDaysItem) holder).mTempButton.setClickable(true);
+                    //更新图表数据
+                    ((FiveDaysItem) holder).mLineChart.setData(makeHumDataSet());
+                    ((FiveDaysItem) holder).mLineChart.invalidate();
+                }
+            });
+
             //图表绘制 2017-1-21
-            for (int i = 0; i < FORECAST_DAYS; i++){
-            }
+            //取消显示刻度
+            XAxis xAxis = ((FiveDaysItem) holder).mLineChart.getXAxis();
+            xAxis.setEnabled(false);
+            YAxis yAxis = ((FiveDaysItem) holder).mLineChart.getAxisLeft();
+            YAxis yAxis1 = ((FiveDaysItem) holder).mLineChart.getAxisRight();
+            yAxis.setEnabled(false);
+            yAxis1.setEnabled(false);
+            xAxis.setDrawGridLines(false);
+            yAxis.setDrawGridLines(false);
+            yAxis1.setDrawGridLines(false);
+            Description description = ((FiveDaysItem) holder).mLineChart.getDescription();
+            description.setEnabled(false);
+            Legend legend = ((FiveDaysItem) holder).mLineChart.getLegend();
+            legend.setEnabled(false);
+
+            //添加温度数据
+            ((FiveDaysItem) holder).mLineChart.setData(makeHumDataSet());
+            ((FiveDaysItem) holder).mLineChart.invalidate();
+
+            //关闭触摸功能
+            ((FiveDaysItem) holder).mLineChart.setTouchEnabled(false);
+
+
 
         }
     }
+
+    //构建温度折线图数据集
+    private LineData makeTempDataSet(){
+        ArrayList<Entry> mMaxValue = new ArrayList<>();
+        ArrayList<Entry> mMinValue = new ArrayList<>();
+
+        for (int i = 0; i < FORECAST_DAYS; i++){
+            float mMaxPointValue = (float)mForecastModel.getResult().getDaily().getTemperature().get(i).getMax();
+            float mMinPointValue = (float)mForecastModel.getResult().getDaily().getTemperature().get(i).getMin();
+            mMaxValue.add(new Entry(i,mMaxPointValue));
+            mMinValue.add(new Entry(i,mMinPointValue));
+        }
+
+        LineDataSet mMaxChartData = new LineDataSet(mMaxValue,"");
+        LineDataSet mMinChartData = new LineDataSet(mMinValue,"");
+
+        ArrayList<ILineDataSet> mTempChartData = new ArrayList<>();
+        mTempChartData.add(mMaxChartData);
+        mTempChartData.add(mMinChartData);
+
+        //美化图表
+        //设置颜色
+        mMaxChartData.setColor(ContextCompat.getColor(mContext,R.color.colorChartMaxValue));
+        mMaxChartData.setCircleColor(ContextCompat.getColor(mContext,R.color.colorChartMaxValue));
+        mMaxChartData.setCircleColorHole(ContextCompat.getColor(mContext,R.color.colorChartMaxValue));
+        mMinChartData.setColor(ContextCompat.getColor(mContext,R.color.colorChartMinValue));
+        mMinChartData.setCircleColor(ContextCompat.getColor(mContext,R.color.colorChartMinValue));
+        mMinChartData.setCircleColorHole(ContextCompat.getColor(mContext,R.color.colorChartMinValue));
+        //加粗线条
+        mMaxChartData.setLineWidth(3f);
+        mMinChartData.setLineWidth(3f);
+        //增大字体
+        mMaxChartData.setValueTextSize(14);
+        mMinChartData.setValueTextSize(14);
+        //设置point半径
+        mMaxChartData.setCircleRadius(4f);
+        mMinChartData.setCircleRadius(4f);
+
+        //设置数据显示格式
+        IValueFormatter iValueFormatter = new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                return String.format("%d°",Math.round(value));
+            }
+        };
+        mMaxChartData.setValueFormatter(iValueFormatter);
+        mMinChartData.setValueFormatter(iValueFormatter);
+
+        return new LineData(mTempChartData);
+    }
+
+    //构建湿度折线图数据集
+    private LineData makeHumDataSet(){
+        ArrayList<Entry> mMaxValue = new ArrayList<>();
+        ArrayList<Entry> mMinValue = new ArrayList<>();
+
+        for (int i = 0; i < FORECAST_DAYS; i++){
+            float mMaxPointValue = (float)mForecastModel.getResult().getDaily().getHumidity().get(i).getMax();
+            float mMinPointValue = (float)mForecastModel.getResult().getDaily().getHumidity().get(i).getMin();
+            mMaxValue.add(new Entry(i,mMaxPointValue));
+            mMinValue.add(new Entry(i,mMinPointValue));
+        }
+
+        LineDataSet mMaxChartData = new LineDataSet(mMaxValue,"");
+        LineDataSet mMinChartData = new LineDataSet(mMinValue,"");
+
+        ArrayList<ILineDataSet> mTempChartData = new ArrayList<>();
+        mTempChartData.add(mMaxChartData);
+        mTempChartData.add(mMinChartData);
+
+        mMaxChartData.setColor(ContextCompat.getColor(mContext,R.color.colorChartMaxValue));
+        mMaxChartData.setCircleColor(ContextCompat.getColor(mContext,R.color.colorChartMaxValue));
+        mMaxChartData.setCircleColorHole(ContextCompat.getColor(mContext,R.color.colorChartMaxValue));
+        mMinChartData.setColor(ContextCompat.getColor(mContext,R.color.colorChartMinValue));
+        mMinChartData.setCircleColor(ContextCompat.getColor(mContext,R.color.colorChartMinValue));
+        mMinChartData.setCircleColorHole(ContextCompat.getColor(mContext,R.color.colorChartMinValue));
+        //加粗线条
+        mMaxChartData.setLineWidth(3f);
+        mMinChartData.setLineWidth(3f);
+        //增大字体
+        mMaxChartData.setValueTextSize(14);
+        mMinChartData.setValueTextSize(14);
+        //设置point半径
+        mMaxChartData.setCircleRadius(4f);
+        mMinChartData.setCircleRadius(4f);
+
+        //设置数据显示格式
+        IValueFormatter iValueFormatter = new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                return String.valueOf((int)(value * 100)) + "%";
+            }
+        };
+        mMaxChartData.setValueFormatter(iValueFormatter);
+        mMinChartData.setValueFormatter(iValueFormatter);
+
+        return new LineData(mTempChartData);
+
+    }
+
+    //待定构建空气质量数据集
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -223,7 +397,13 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
         @BindView(R.id.img_four) public ImageView mFourDayImg;
         @BindView(R.id.img_five) public ImageView mFiveDayImg;
 
+        //图表
         @BindView(R.id.line_chart) LineChart mLineChart;
+
+        //温度图表按钮
+        @BindView(R.id.button_bar_temperature) Button mTempButton;
+        //湿度图表按钮
+        @BindView(R.id.button_bar_humidity) Button mHumiButton;
 
         public FiveDaysItem(View itemView) {
             super(itemView);

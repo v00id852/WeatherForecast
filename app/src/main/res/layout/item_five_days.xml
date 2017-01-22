@@ -1,15 +1,19 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-              android:layout_width="match_parent"
-              android:layout_height="wrap_content">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="8dp"
+    app:cardCornerRadius="4dp"
+    >
 
-    <LinearLayout
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:id="@+id/five_days_forecast">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:layout_marginLeft="16dp"
+            android:layout_marginRight="16dp"
+            android:id="@+id/five_days_forecast">
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -149,15 +153,53 @@
 
     </LinearLayout>
 
+
+
     <com.github.mikephil.charting.charts.LineChart
         android:id="@+id/line_chart"
-        android:layout_height="match_parent"
+        android:layout_height="150dp"
         android:layout_width="match_parent"
         android:layout_below="@id/five_days_forecast"
+        android:layout_marginLeft="24dp"
+        android:layout_marginRight="24dp"
+        android:layout_marginTop="16dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="16dp"
+        android:background="@color/colorGrey"
+        android:layout_below="@+id/button_bar"
+        android:layout_marginTop="32dp"/>
+
+    <LinearLayout
+        android:layout_width="128dp"
+        android:layout_height="24dp"
+        android:id="@+id/button_bar"
+        android:orientation="horizontal"
+        android:layout_below="@id/line_chart"
+        android:layout_marginTop="16dp"
+        android:background="@drawable/black_border"
+        android:layout_centerHorizontal="true"
         >
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@color/colorButtonSelected"
+            android:text="@string/temperature_button"
+            android:textColor="@color/colorButtonFontSelected"
+            android:id="@+id/button_bar_temperature"/>
 
-    </com.github.mikephil.charting.charts.LineChart>
+        <Button
+            android:layout_width="0dp"
+            android:layout_weight="1"
+            android:layout_height="wrap_content"
+            android:background="@color/colorButtonUnselected"
+            android:textColor="@color/colorButtonFontUnselected"
+            android:text="@string/humidity_button"
+            android:id="@+id/button_bar_humidity"
+            />
 
-
+    </LinearLayout>
 
 </RelativeLayout>

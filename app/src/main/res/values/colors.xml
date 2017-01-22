@@ -3,4 +3,11 @@
     <color name="colorPrimary">#3F51B5</color>
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
+    <color name="colorChartMaxValue">#FF5722</color>
+    <color name="colorChartMinValue">#03A9F4</color>
+    <color name="colorGrey">#EEEEEE</color>
+    <color name="colorButtonSelected">#212121</color>
+    <color name="colorButtonUnselected">#BDBDBD</color>
+    <color name="colorButtonFontUnselected">#000000</color>
+    <color name="colorButtonFontSelected">#BDBDBD</color>
 </resources>
