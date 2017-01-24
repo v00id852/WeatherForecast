@@ -10,4 +10,5 @@
     <color name="colorButtonUnselected">#BDBDBD</color>
     <color name="colorButtonFontUnselected">#000000</color>
     <color name="colorButtonFontSelected">#BDBDBD</color>
+    <color name="colorProgressBarBackground">#9E9E9E</color>
 </resources>

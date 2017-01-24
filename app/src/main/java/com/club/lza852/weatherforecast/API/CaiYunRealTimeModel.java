@@ -6,7 +6,7 @@ import java.util.List;
  * Created by ziang on 2017/1/15.
  */
 
-public class RealTimeModel {
+public class CaiYunRealTimeModel {
 
 
     /**

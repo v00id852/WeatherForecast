@@ -2,4 +2,14 @@
     <string name="app_name">WeatherForecast</string>
     <string name="temperature_button">温度</string>
     <string name="humidity_button">湿度</string>
+    <string name="pm25_label">PM2.5(μg/cm³)</string>
+    <string name="co_label">CO</string>
+    <string name="no2_label">NO2</string>
+    <string name="o3_label">O3</string>
+    <string name="pm10_label">PM10(μg/cm³)</string>
+    <string name="so2_label">SO2</string>
+    <string name="air_label">空气质量</string>
+    <string name="hour_weather">小时天气</string>
+    <string name="air_pollution">空气质量</string>
+    <string name="rain_fall">降水量</string>
 </resources>

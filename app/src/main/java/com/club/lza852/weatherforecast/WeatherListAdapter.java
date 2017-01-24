@@ -1,6 +1,5 @@
 package com.club.lza852.weatherforecast;
 
-import android.annotation.TargetApi;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
@@ -15,7 +14,8 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.club.lza852.weatherforecast.API.ForecastModel;
+import com.club.lza852.weatherforecast.API.CaiYunForecastModel;
+import com.club.lza852.weatherforecast.API.HeFengForecastModel;
 import com.github.mikephil.charting.charts.LineChart;
 import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.Description;
@@ -25,17 +25,16 @@ import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.Entry;
 import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.data.LineDataSet;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.formatter.IValueFormatter;
-import com.github.mikephil.charting.formatter.PercentFormatter;
 import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.github.mikephil.charting.utils.ViewPortHandler;
+import com.timqi.sectorprogressview.ColorfulRingProgressView;
 
-import java.text.DateFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.List;
-import java.util.Map;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -50,9 +49,12 @@ import butterknife.ButterKnife;
 
 public class WeatherListAdapter extends RecyclerView.Adapter {
 
-    private ForecastModel mForecastModel;
+    private CaiYunForecastModel mCaiYunForecastModel;
+    private HeFengForecastModel mHeFengForecastModel;
 
     private static int FIVE_DAYS_FORECAST = 1;
+    private static int SINGLE_CHART = 2;
+    private static int TEST = 99;
 
     //预报的天数
     private static int FORECAST_DAYS = 5;
@@ -61,9 +63,15 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
 
     private String LOG_TAG = "WeatherListAdpater";
 
-    public WeatherListAdapter(Context mContext, ForecastModel mForecastModel){
+    public WeatherListAdapter(Context mContext, CaiYunForecastModel mCaiYunForecastModel) {
         this.mContext = mContext;
-        this.mForecastModel = mForecastModel;
+        this.mCaiYunForecastModel = mCaiYunForecastModel;
+    }
+
+    public WeatherListAdapter(Context mContext, CaiYunForecastModel mCaiYunForecastModel, HeFengForecastModel mHeFengForecastModel){
+        this.mContext = mContext;
+        this.mCaiYunForecastModel = mCaiYunForecastModel;
+        this.mHeFengForecastModel = mHeFengForecastModel;
     }
 
     private String dayOfWeekInt2String(int dayOfWeek){
@@ -149,7 +157,7 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
     @Override
     public void onBindViewHolder(final RecyclerView.ViewHolder holder, int position) {
 
-        //五天天气预报view
+        //五天天气预报
         if (holder instanceof FiveDaysItem){
             //获得当前周几 2017-1-20
             Calendar mCalendar = Calendar.getInstance();
@@ -166,27 +174,27 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
             //设置天气图标 2017-1-20
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
                 //第一天
-                ((FiveDaysItem) holder).mOneDayImg.setImageDrawable(string2WeatherDrawableAPI21(mForecastModel.getResult().getDaily().getSkycon().get(0).getValue()));
+                ((FiveDaysItem) holder).mOneDayImg.setImageDrawable(string2WeatherDrawableAPI21(mCaiYunForecastModel.getResult().getDaily().getSkycon().get(0).getValue()));
                 //第二天
-                ((FiveDaysItem) holder).mTwoDayImg.setImageDrawable(string2WeatherDrawableAPI21(mForecastModel.getResult().getDaily().getSkycon().get(1).getValue()));
+                ((FiveDaysItem) holder).mTwoDayImg.setImageDrawable(string2WeatherDrawableAPI21(mCaiYunForecastModel.getResult().getDaily().getSkycon().get(1).getValue()));
                 //第三天
-                ((FiveDaysItem) holder).mThreeDayImg.setImageDrawable(string2WeatherDrawableAPI21(mForecastModel.getResult().getDaily().getSkycon().get(2).getValue()));
+                ((FiveDaysItem) holder).mThreeDayImg.setImageDrawable(string2WeatherDrawableAPI21(mCaiYunForecastModel.getResult().getDaily().getSkycon().get(2).getValue()));
                 //第四天
-                ((FiveDaysItem) holder).mFourDayImg.setImageDrawable(string2WeatherDrawableAPI21(mForecastModel.getResult().getDaily().getSkycon().get(3).getValue()));
+                ((FiveDaysItem) holder).mFourDayImg.setImageDrawable(string2WeatherDrawableAPI21(mCaiYunForecastModel.getResult().getDaily().getSkycon().get(3).getValue()));
                 //第五天
-                ((FiveDaysItem) holder).mFiveDayImg.setImageDrawable(string2WeatherDrawableAPI21(mForecastModel.getResult().getDaily().getSkycon().get(4).getValue()));
+                ((FiveDaysItem) holder).mFiveDayImg.setImageDrawable(string2WeatherDrawableAPI21(mCaiYunForecastModel.getResult().getDaily().getSkycon().get(4).getValue()));
             } else {
                 //API21以下
                 //第一天
-                ((FiveDaysItem) holder).mOneDayImg.setImageDrawable(string2WeatherDrawable(mForecastModel.getResult().getDaily().getSkycon().get(0).getValue()));
+                ((FiveDaysItem) holder).mOneDayImg.setImageDrawable(string2WeatherDrawable(mCaiYunForecastModel.getResult().getDaily().getSkycon().get(0).getValue()));
                 //第二天
-                ((FiveDaysItem) holder).mTwoDayImg.setImageDrawable(string2WeatherDrawable(mForecastModel.getResult().getDaily().getSkycon().get(1).getValue()));
+                ((FiveDaysItem) holder).mTwoDayImg.setImageDrawable(string2WeatherDrawable(mCaiYunForecastModel.getResult().getDaily().getSkycon().get(1).getValue()));
                 //第三天
-                ((FiveDaysItem) holder).mThreeDayImg.setImageDrawable(string2WeatherDrawable(mForecastModel.getResult().getDaily().getSkycon().get(2).getValue()));
+                ((FiveDaysItem) holder).mThreeDayImg.setImageDrawable(string2WeatherDrawable(mCaiYunForecastModel.getResult().getDaily().getSkycon().get(2).getValue()));
                 //第四天
-                ((FiveDaysItem) holder).mFourDayImg.setImageDrawable(string2WeatherDrawable(mForecastModel.getResult().getDaily().getSkycon().get(3).getValue()));
+                ((FiveDaysItem) holder).mFourDayImg.setImageDrawable(string2WeatherDrawable(mCaiYunForecastModel.getResult().getDaily().getSkycon().get(3).getValue()));
                 //第五天
-                ((FiveDaysItem) holder).mFiveDayImg.setImageDrawable(string2WeatherDrawable(mForecastModel.getResult().getDaily().getSkycon().get(4).getValue()));
+                ((FiveDaysItem) holder).mFiveDayImg.setImageDrawable(string2WeatherDrawable(mCaiYunForecastModel.getResult().getDaily().getSkycon().get(4).getValue()));
             }
 
             //温度图表切换按钮 2017-1-23
@@ -243,12 +251,44 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
             legend.setEnabled(false);
 
             //添加温度数据
-            ((FiveDaysItem) holder).mLineChart.setData(makeHumDataSet());
+            ((FiveDaysItem) holder).mLineChart.setData(makeTempDataSet());
             ((FiveDaysItem) holder).mLineChart.invalidate();
+
+            ((FiveDaysItem) holder).mTempButton.setClickable(false);
 
             //关闭触摸功能
             ((FiveDaysItem) holder).mLineChart.setTouchEnabled(false);
+        } else if (holder instanceof SingleChartsItem) {
 
+            //取消y刻度
+            ((SingleChartsItem) holder).mSingleLineChart.setTouchEnabled(false);
+            YAxis yAxis = ((SingleChartsItem) holder).mSingleLineChart.getAxisLeft();
+            YAxis yAxis1 = ((SingleChartsItem) holder).mSingleLineChart.getAxisRight();
+            yAxis.setEnabled(false);
+            yAxis1.setEnabled(false);
+            yAxis.setDrawGridLines(false);
+            yAxis1.setDrawGridLines(false);
+
+            //设置x刻度
+            Calendar mCalendar = Calendar.getInstance();
+
+            XAxis xAxis = ((SingleChartsItem) holder).mSingleLineChart.getXAxis();
+            xAxis.setDrawGridLines(false);
+            xAxis.setValueFormatter(new IAxisValueFormatter() {
+                @Override
+                public String getFormattedValue(float value, AxisBase axis) {
+                    return String.format("%02d:00",(int)value);
+                }
+            });
+            //关闭描述
+            Description description = ((SingleChartsItem) holder).mSingleLineChart.getDescription();
+            description.setEnabled(false);
+
+            Legend legend = ((SingleChartsItem) holder).mSingleLineChart.getLegend();
+            legend.setEnabled(false);
+
+            ((SingleChartsItem) holder).mSingleLineChart.setData(makeHourWeatherDataSet());
+            ((SingleChartsItem) holder).mSingleLineChart.invalidate();
 
 
         }
@@ -260,8 +300,8 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
         ArrayList<Entry> mMinValue = new ArrayList<>();
 
         for (int i = 0; i < FORECAST_DAYS; i++){
-            float mMaxPointValue = (float)mForecastModel.getResult().getDaily().getTemperature().get(i).getMax();
-            float mMinPointValue = (float)mForecastModel.getResult().getDaily().getTemperature().get(i).getMin();
+            float mMaxPointValue = (float) mCaiYunForecastModel.getResult().getDaily().getTemperature().get(i).getMax();
+            float mMinPointValue = (float) mCaiYunForecastModel.getResult().getDaily().getTemperature().get(i).getMin();
             mMaxValue.add(new Entry(i,mMaxPointValue));
             mMinValue.add(new Entry(i,mMinPointValue));
         }
@@ -310,8 +350,8 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
         ArrayList<Entry> mMinValue = new ArrayList<>();
 
         for (int i = 0; i < FORECAST_DAYS; i++){
-            float mMaxPointValue = (float)mForecastModel.getResult().getDaily().getHumidity().get(i).getMax();
-            float mMinPointValue = (float)mForecastModel.getResult().getDaily().getHumidity().get(i).getMin();
+            float mMaxPointValue = (float) mCaiYunForecastModel.getResult().getDaily().getHumidity().get(i).getMax();
+            float mMinPointValue = (float) mCaiYunForecastModel.getResult().getDaily().getHumidity().get(i).getMin();
             mMaxValue.add(new Entry(i,mMaxPointValue));
             mMinValue.add(new Entry(i,mMinPointValue));
         }
@@ -353,6 +393,48 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
 
     }
 
+    //构建小时天气数据集
+    private LineData makeHourWeatherDataSet(){
+        ArrayList<Entry> mHourPointData = new ArrayList<>();
+        Calendar calendar = Calendar.getInstance();
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm");
+        int initTemp = Math.round(mCaiYunForecastModel.getResult().getHourly().getTemperature().get(0).getValue());
+        //添加未来24小时数据
+        for (int i = 0; i < 24; i++) {
+            int temp = (int)Math.round(mCaiYunForecastModel.getResult().getHourly().getTemperature().get(i).getValue()) - initTemp;
+            try {
+                calendar.setTime(simpleDateFormat.parse(mCaiYunForecastModel.getResult().getHourly().getTemperature().get(i).getDatetime()));
+                int hour = calendar.get(Calendar.HOUR_OF_DAY);
+                mHourPointData.add(new Entry(hour,temp));
+            } catch (ParseException e){
+                e.printStackTrace();
+            }
+        }
+        LineDataSet mLineDataSet = new LineDataSet(mHourPointData,"");
+        LineData lineData = new LineData(mLineDataSet);
+
+        mLineDataSet.setCircleColor(ContextCompat.getColor(mContext,R.color.colorChartMinValue));
+        mLineDataSet.setCircleColorHole(ContextCompat.getColor(mContext,R.color.colorChartMinValue));
+        mLineDataSet.setColor(ContextCompat.getColor(mContext,R.color.colorChartMinValue));
+
+        mLineDataSet.setCircleRadius(4f);
+        mLineDataSet.setValueTextSize(14);
+        mLineDataSet.setLineWidth(3f);
+
+        //设置数据显示格式
+        IValueFormatter iValueFormatter = new IValueFormatter() {
+            @Override
+            public String getFormattedValue(float value, Entry entry, int dataSetIndex, ViewPortHandler viewPortHandler) {
+                return String.format("%d°",Math.round(value) + i);
+            }
+        };
+
+        mLineDataSet.setValueFormatter(iValueFormatter);
+
+        return new LineData(mLineDataSet);
+
+    }
+
     //待定构建空气质量数据集
 
     @Override
@@ -362,6 +444,16 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
             FiveDaysItem mFiveDaysViewHolder = new FiveDaysItem(v);
             return mFiveDaysViewHolder;
         }
+        if (viewType == TEST) {
+            View v = LayoutInflater.from(mContext).inflate(R.layout.item_recyclerview, parent, false);
+            Test mTest = new Test(v);
+            return mTest;
+        }
+        if (viewType == SINGLE_CHART){
+            View v = LayoutInflater.from(mContext).inflate(R.layout.item_airpollution, parent, false);
+            SingleChartsItem mSingleChartsItem = new SingleChartsItem(v);
+            return mSingleChartsItem;
+        }
         return null;
     }
 
@@ -370,6 +462,8 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
         switch(position){
             case 0:
                 return FIVE_DAYS_FORECAST;
+            case 1:
+                return SINGLE_CHART;
             default:
                 return super.getItemViewType(position);
         }
@@ -378,7 +472,7 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
     @Override
     public int getItemCount() {
         //返回列表item个数 2017-1-20
-        return 1;
+        return 2;
     }
 
     //五天天气预报ViewHolder 2017-1-20
@@ -409,6 +503,30 @@ public class WeatherListAdapter extends RecyclerView.Adapter {
             super(itemView);
             ButterKnife.bind(this,itemView);
 
+        }
+    }
+
+    //Test
+    public class Test extends RecyclerView.ViewHolder{
+
+        @BindView(R.id.aqi_test) ColorfulRingProgressView crpv;
+
+        public Test(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this,itemView);
+        }
+    }
+
+    public class SingleChartsItem extends RecyclerView.ViewHolder{
+
+        @BindView(R.id.single_line_chart) LineChart mSingleLineChart;
+        @BindView(R.id.button_bar_hour_weather) Button mHourButton;
+        @BindView(R.id.button_bar_air_pollution) Button mPollutionButton;
+        @BindView(R.id.button_bar_rain_fall) Button mRainFallButton;
+
+        public SingleChartsItem(View itemView) {
+            super(itemView);
+            ButterKnife.bind(this, itemView);
         }
     }
 }
