@@ -19,8 +19,8 @@ public class CaiYunWeatherInterface {
 
     //天气预报接口
     public static interface mForecastInterface{
-        @GET("/v2/{token}/{location}/forecast.json")
-        Call<CaiYunForecastModel> getCaiYunForecastInfo(@Path("token") String token, @Path("location") String location);
+        @GET("/v2/{token}/{location}/forecast.json?hourlysteps=384&alert=true&span=16")
+        Call<CaiYunForecastModel> getCaiYunForecastInfo(@Path("token") String token,@Path("location") String location);
     }
 
     //高德定位接口                                                                               

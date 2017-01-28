@@ -388,14 +388,14 @@ public class CaiYunForecastModel {
                  * datetime : 2017-01-15 23:00
                  */
 
-                private int value;
+                private double value;
                 private String datetime;
 
-                public int getValue() {
+                public double getValue() {
                     return value;
                 }
 
-                public void setValue(int value) {
+                public void setValue(double value) {
                     this.value = value;
                 }
 
@@ -450,14 +450,14 @@ public class CaiYunForecastModel {
                  * datetime : 2017-01-15 23:00
                  */
 
-                private float value;
+                private double value;
                 private String datetime;
 
-                public float getValue() {
+                public double getValue() {
                     return value;
                 }
 
-                public void setValue(float value) {
+                public void setValue(double value) {
                     this.value = value;
                 }
 
@@ -484,9 +484,9 @@ public class CaiYunForecastModel {
             private String status;
             private String description;
             private String datasource;
-            private List<Integer> probability;
-            private List<Integer> precipitation_2h;
-            private List<Integer> precipitation;
+            private List<Double> probability;
+            private List<Double> precipitation_2h;
+            private List<Double> precipitation;
 
             public String getStatus() {
                 return status;
@@ -512,27 +512,27 @@ public class CaiYunForecastModel {
                 this.datasource = datasource;
             }
 
-            public List<Integer> getProbability() {
+            public List<Double> getProbability() {
                 return probability;
             }
 
-            public void setProbability(List<Integer> probability) {
+            public void setProbability(List<Double> probability) {
                 this.probability = probability;
             }
 
-            public List<Integer> getPrecipitation_2h() {
+            public List<Double> getPrecipitation_2h() {
                 return precipitation_2h;
             }
 
-            public void setPrecipitation_2h(List<Integer> precipitation_2h) {
+            public void setPrecipitation_2h(List<Double> precipitation_2h) {
                 this.precipitation_2h = precipitation_2h;
             }
 
-            public List<Integer> getPrecipitation() {
+            public List<Double> getPrecipitation() {
                 return precipitation;
             }
 
-            public void setPrecipitation(List<Integer> precipitation) {
+            public void setPrecipitation(List<Double> precipitation) {
                 this.precipitation = precipitation;
             }
         }

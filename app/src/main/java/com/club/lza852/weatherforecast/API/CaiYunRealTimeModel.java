@@ -247,7 +247,7 @@ public class CaiYunRealTimeModel {
                  */
 
                 private String status;
-                private int intensity;
+                private double intensity;
                 private String datasource;
 
                 public String getStatus() {
@@ -258,11 +258,11 @@ public class CaiYunRealTimeModel {
                     this.status = status;
                 }
 
-                public int getIntensity() {
+                public double getIntensity() {
                     return intensity;
                 }
 
-                public void setIntensity(int intensity) {
+                public void setIntensity(double intensity) {
                     this.intensity = intensity;
                 }
 
