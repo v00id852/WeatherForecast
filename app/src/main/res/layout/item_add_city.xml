@@ -1,0 +1,261 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    >
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:src="@drawable/cancel"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true"
+        android:id="@+id/item_delete_button"
+        android:layout_marginRight="4dp"
+        />
+
+    <android.support.v7.widget.CardView
+    
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:cardCornerRadius="8dp"
+        android:layout_marginLeft="8dp"
+        android:layout_marginRight="8dp"
+        android:layout_marginTop="8dp"
+        android:id="@+id/item_cardview"
+        android:background="@android:color/black"
+        >
+    
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:paddingLeft="8dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="8dp"
+            android:paddingRight="8dp"
+            >
+    
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/item_location"
+                android:paddingLeft="2dp"
+                android:layout_marginTop="4dp"
+                android:background="@drawable/bg_circle"
+                android:paddingRight="8dp">
+    
+                <ImageView
+                    android:layout_width="14dp"
+                    android:layout_height="14dp"
+                    android:src="@drawable/item_location"
+                    android:layout_gravity="center_vertical"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="4dp"
+                    android:id="@+id/item_city_name"
+                    android:textSize="12sp"
+                    android:text="上蔡县"
+                    android:textColor="@color/white"/>
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_marginLeft="20dp"
+                android:layout_below="@id/item_location"
+                android:id="@+id/item_weather_status"
+                android:layout_alignBottom="@+id/item_temp_part"
+                android:layout_marginTop="8dp">
+    
+                <ImageView
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:id="@+id/item_img_weather"
+                    android:layout_gravity="center_horizontal"
+                    android:src="@drawable/sun"/>
+    
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:id="@+id/item_weather_status_code"
+                    android:textColor="@color/white"
+                    android:text="晴"
+                    android:layout_gravity="center_horizontal"
+                    android:gravity="center_horizontal"/>
+
+            </LinearLayout>
+    
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_toRightOf="@id/item_weather_status"
+                android:layout_below="@id/item_location"
+                android:layout_marginLeft="12dp"
+                android:layout_marginTop="2dp"
+                android:id="@+id/item_temp_part"
+                >
+    
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/item_temp"
+                    android:textSize="40sp"
+                    android:text="14°"
+                    android:textColor="@color/white"
+                    android:layout_gravity="center"
+                    />
+    
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:id="@+id/item_temp_interval"
+                    android:layout_gravity="center"
+                    android:layout_marginTop="1dp"
+                    >
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/item_max_temp"
+                        android:textSize="16sp"
+                        android:text="--°"
+                        android:textColor="@android:color/white"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textSize="16sp"
+                        android:text="/"
+                        android:textColor="@android:color/white"/>
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/item_min_temp"
+                        android:textSize="16sp"
+                        android:text="--°"
+                        android:textColor="@android:color/white"/>
+    
+                </LinearLayout>
+    
+            </LinearLayout>
+    
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:id="@+id/item_aqi"
+                android:textSize="12sp"
+                android:layout_alignBottom="@id/item_weather_status"
+                android:layout_toRightOf="@id/item_temp_part"
+                android:text="26 空气良好"
+                android:layout_marginTop="4dp"
+                android:paddingLeft="4dp"
+                android:paddingRight="4dp"
+                android:layout_marginLeft="8dp"
+                />
+    
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:layout_alignParentRight="true"
+                android:layout_marginLeft="8dp"
+                android:layout_marginTop="4dp"
+                android:id="@+id/item_forecast">
+    
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+    
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/item_day_of_week"
+                        android:text="周一"
+                        android:textColor="@color/white"
+                        />
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/more"
+                        android:text="more >"
+                        android:textColor="@color/white"
+                        android:layout_marginLeft="20dp"/>
+    
+                </LinearLayout>
+                
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical"
+                    android:id="@+id/item_forecast_part"
+                    android:layout_gravity="center_horizontal">
+                    
+                    <ImageView
+                        android:layout_width="40dp"
+                        android:layout_height="40dp"
+                        android:id="@+id/item_img_tomerrow"
+                        android:src="@drawable/rain"
+                        android:layout_marginTop="6dp"/>
+    
+    
+                    <LinearLayout
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:id="@+id/item_temp_interval_tomerrow"
+                        android:layout_gravity="center"
+                        android:layout_marginTop="8dp"
+                        android:gravity="center_horizontal"
+                        >
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/item_max_temp_tomorrow"
+                            android:textSize="16sp"
+                            android:text="--°"
+                            android:textColor="@android:color/white"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:textSize="16sp"
+                            android:text="/"
+                            android:textColor="@android:color/white"/>
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:id="@+id/item_min_temp_tomorrow"
+                            android:textSize="16sp"
+                            android:text="--°"
+                            android:textColor="@android:color/white"/>
+    
+                    </LinearLayout>
+    
+                    
+                </LinearLayout>
+    
+            </LinearLayout>
+
+
+            <View
+                android:layout_width="2dp"
+                android:layout_height="match_parent"
+                android:background="@color/white"
+                android:id="@+id/fengefu"
+                android:layout_alignParentTop="true"
+                android:layout_alignBottom="@id/item_weather_status"
+                android:layout_toLeftOf="@id/item_forecast"
+                />
+    
+        </RelativeLayout>
+    
+    </android.support.v7.widget.CardView>
+    
+</RelativeLayout>

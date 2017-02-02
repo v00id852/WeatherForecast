@@ -12,4 +12,18 @@
     <string name="hour_weather">小时天气</string>
     <string name="air_pollution">空气质量</string>
     <string name="rain_fall">降水量</string>
+    <string name="permission">天气预报</string>
+    <string name="weather_alert">天气预警</string>
+    <string name="locate_failed">定位失败,请检查网络连接或定位权限是否开启</string>
+    <string name="setting_common">通用设置</string>
+    <string name="setting_open_locate">开启定位</string>
+    <string name="setting_summary_open_locate">当前地区:</string>
+    <string name="setting_auto_update_title">自动更新天气</string>
+    <string name="setting_notification_bar">通知栏天气设置</string>
+    <string name="setting_weather_alert">天气预警通知提醒</string>
+    <string name="setting_city">城市设置</string>
+    <string name="setting_add_city">添加城市</string>
+    <string name="setting_remove_city">删除城市</string>
+    <string name="setting_others">其他</string>
+    <string name="setting_about">关于</string>
 </resources>

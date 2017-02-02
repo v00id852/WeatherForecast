@@ -97,10 +97,10 @@ public class CaiYunRealTimeModel {
          */
 
         private String status;
-        private int temperature;
+        private double temperature;
         private String skycon;
         private double cloudrate;
-        private int aqi;
+        private double aqi;
         private double humidity;
         private int pm25;
         private PrecipitationBean precipitation;
@@ -114,11 +114,11 @@ public class CaiYunRealTimeModel {
             this.status = status;
         }
 
-        public int getTemperature() {
+        public double getTemperature() {
             return temperature;
         }
 
-        public void setTemperature(int temperature) {
+        public void setTemperature(double temperature) {
             this.temperature = temperature;
         }
 
@@ -138,11 +138,11 @@ public class CaiYunRealTimeModel {
             this.cloudrate = cloudrate;
         }
 
-        public int getAqi() {
+        public double getAqi() {
             return aqi;
         }
 
-        public void setAqi(int aqi) {
+        public void setAqi(double aqi) {
             this.aqi = aqi;
         }
 

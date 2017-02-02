@@ -1,8 +1,14 @@
 package com.club.lza852.weatherforecast;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.graphics.drawable.GradientDrawable;
+import android.graphics.drawable.ShapeDrawable;
+import android.graphics.drawable.shapes.RoundRectShape;
 import android.support.v4.content.ContextCompat;
+import android.support.v7.widget.CardView;
+import android.util.Log;
 
 /**
  * Created by ziang on 2017/1/25.
@@ -76,5 +82,47 @@ public class Utils {
             case "HAZE":return "霾";
             default:return "";
         }
+    }
+
+    public static String tempDouble2String(Double temp){
+        return String.format("%d°",Math.round(temp));
+    }
+
+    public static String getAqiString(double aqi){
+        if (aqi <= 50){
+            return String.format("%d 空气优秀", (int)aqi);
+        } else if (aqi <= 100) {
+            return String.format("%d 空气良好", (int)aqi);
+        } else if (aqi <= 150){
+            return String.format("%d 轻度污染", (int)aqi);
+        } else if (aqi <= 200){
+            return String.format("%d 中度污染", (int)aqi);
+        } else if (aqi <= 300){
+            return String.format("%d 重度污染", (int)aqi);
+        }
+        return "";
+    }
+
+    public static Drawable getAqiDrawable(Context mContext, double aqi) {
+        int aqiInt = (int)aqi;
+        Log.d("aqi",String.valueOf(aqiInt));
+        GradientDrawable gradientDrawable = new GradientDrawable();
+        gradientDrawable.setCornerRadius(20);
+
+        if (aqi <= 50){
+            //绿色
+            gradientDrawable.setColor(ContextCompat.getColor(mContext,R.color.green));
+        } else if (aqi <= 100){
+            //黄色
+            gradientDrawable.setColor(ContextCompat.getColor(mContext,R.color.yellow));
+        } else if (aqi <= 150){
+            //橘色
+            Log.d("color","orange");
+            gradientDrawable.setColor(ContextCompat.getColor(mContext, R.color.orange));
+        } else {
+            //红色
+           gradientDrawable.setColor(ContextCompat.getColor(mContext, R.color.red));
+        }
+        return gradientDrawable;
     }
 }

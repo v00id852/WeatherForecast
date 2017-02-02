@@ -26,39 +26,6 @@ public class RetrofitClient {
     private static String hefengtoken = "752d4ffa96744528a91a880a60c76661";
     private static String lokey = "e998272a2c9692254075af57b88ce157";
 
-    public static void getHeFengForecastInfo(String cityLocation, Callback<HeFengForecastModel> mCallback){
-        Gson gson = new GsonBuilder()
-                .setLenient()
-                .create();
-        Retrofit retrofit = new Retrofit.Builder()
-                .baseUrl(BASE_URL)
-                .addConverterFactory(GsonConverterFactory.create(gson))
-                .build();
-        HeFengWeatherInterface.mHeFengWeatherInfoInterface mForecastAPI = retrofit.create(HeFengWeatherInterface.mHeFengWeatherInfoInterface.class);
-
-        Call<HeFengForecastModel> mForecastCall = mForecastAPI.getHeFengWeatherInfo(cityLocation, hefengtoken);
-
-        if (mCallback==null) {
-            mCallback = new Callback<HeFengForecastModel>() {
-                @Override
-                public void onResponse(Call<HeFengForecastModel> call, Response<HeFengForecastModel> response) {
-                    if (response.isSuccessful()) {
-                        HeFengForecastModel heFengForecastModel = response.body();
-                        Log.d("ForecastInfo", heFengForecastModel.toString());
-                    }
-                }
-
-                @Override
-                public void onFailure(Call<HeFengForecastModel> call, Throwable t) {
-                    t.printStackTrace();
-                }
-            };
-        }
-
-        mForecastCall.enqueue(mCallback);
-
-    }
-
     //获取天气预报信息
     public static void getForecastInfo(String cityLocation, Map<String, String> queryMap, Callback<CaiYunForecastModel> mCallback){
         Gson gson = new GsonBuilder()

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout="@layout/item_setting_item"
+    >
+
+    <CheckBoxPreference
+        android:key="setting_open_locate"
+        android:title="@string/setting_open_locate"
+        android:summary="@string/setting_summary_open_locate"
+        android:layout="@layout/item_setting_item"
+        />
+    <CheckBoxPreference
+        android:key="setting_auto_update_weather"
+        android:title="@string/setting_auto_update_title"
+        android:layout="@layout/item_setting_item"/>
+
+    <CheckBoxPreference
+        android:key="setting_open_alert"
+        android:title="@string/setting_weather_alert"
+        android:layout="@layout/item_setting_item"/>
+
+    <PreferenceCategory
+        android:layout="@layout/item_setting_group"
+        android:title="@string/setting_city">
+
+        <Preference
+            android:layout="@layout/item_setting_item"
+            android:title="@string/setting_add_city">
+            <intent android:action="android.intent.action.MAIN"
+                    android:targetPackage=""/>
+        </Preference>
+        <Preference
+            android:layout="@layout/item_setting_item"
+            android:title="@string/setting_remove_city"/>
+
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:layout="@layout/item_setting_group"
+        android:title="@string/setting_others"
+        >
+
+        <Preference
+            android:title="@string/setting_about"
+            android:layout="@layout/item_setting_item">
+
+        </Preference>
+
+
+    </PreferenceCategory>
+
+
+</PreferenceScreen>

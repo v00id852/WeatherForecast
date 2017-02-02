@@ -8,10 +8,20 @@
     <color name="colorChartValue">#32c6f1</color>
     <color name="colorGrey">#EEEEEE</color>
     <color name="colorButtonSelected">#212121</color>
-    <color name="colorButtonUnselected">#BDBDBD</color>
+    <color name="colorButtonUnselected">#FF7E00</color>
     <color name="colorButtonFontUnselected">#000000</color>
     <color name="colorButtonFontSelected">#BDBDBD</color>
     <color name="colorProgressBarBackground">#9E9E9E</color>
     <color name="white">#ffffff</color>
     <color name="colorImgForeGround">#30000000</color>
+    <color name="colorActionBarBackground">#00000000</color>
+    <color name="colorAlertButton">#FF3D00</color>
+    <color name="colorSettingGroupTitle">#EEEEEE</color>
+    <color name="green">#81C784</color>
+    <color name="black">#000000</color>
+    <color name="orange">#FF9800</color>
+    <color name="yellow">#FFFF70</color>
+    <color name="red">#FF0000</color>
+    <color name="colorItemCityNameBackground">#007EA9</color>
+    <color name="colorItemBackground">#00B6F1</color>
 </resources>

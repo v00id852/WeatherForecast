@@ -2,33 +2,75 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginBottom="0dp">
+    android:layout_marginBottom="0dp"
+    android:id="@+id/main_weather_layout">
 
-    <RelativeLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:fitsSystemWindows="true">
+    <android.support.v4.view.ViewPager
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/img_background_view_pager"
+        >
+
+    </android.support.v4.view.ViewPager>
+
+    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+                    android:orientation="vertical"
+                    android:layout_width="match_parent"
+                    android:layout_height="?attr/actionBarSize"
+                    android:id="@+id/action_bar"
+                    android:layout_marginRight="8dp"
+                    android:background="@android:color/transparent"
+                    >
+
         <ImageView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="fitXY"
-            android:id="@+id/img_background" />
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@color/colorImgForeGround"/>
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/add_city"
+            android:layout_marginLeft="8dp"
+            android:layout_centerVertical="true"
+            android:id="@+id/actionbar_add_city"
+            />
+        <me.relex.circleindicator.CircleIndicator
+            android:layout_width="wrap_content"
+            android:layout_height="36dp"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:id="@+id/actionbar_indicator"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/setting"
+            android:id="@+id/setting"/>
+
     </RelativeLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="36dp"
-        android:textSize="26sp"
-        android:text="--"
-        android:textStyle="bold"
-        android:id="@+id/city_name"
-        android:textColor="@android:color/white"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="26sp"
+            android:text="--"
+            android:textStyle="bold"
+            android:id="@+id/city_name"
+            android:layout_centerVertical="true"
+            android:textColor="@android:color/white"
+            android:layout_below="@id/action_bar"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="16dp"/>
+
+        <ImageView
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:src="@drawable/locate"
+            android:id="@+id/img_locate"
+            android:layout_toLeftOf="@id/city_name"
+            android:layout_alignTop="@id/city_name"
+            android:layout_marginTop="8dp"
+            android:layout_marginRight="8dp"
+            />
 
     <TextView
         android:layout_width="wrap_content"
@@ -50,7 +92,7 @@
         android:layout_marginBottom="-10dp"
         android:text="--°"
         android:id="@+id/temp"
-        android:paddingLeft="20dp"
+        android:paddingLeft="36dp"
         android:includeFontPadding="false"
         android:textColor="@android:color/white"
         />
@@ -84,6 +126,18 @@
             android:textColor="@android:color/white"/>
 
     </LinearLayout>
+
+    <Button
+        android:layout_width="wrap_content"
+        android:layout_height="30dp"
+        android:layout_centerHorizontal="true"
+        android:layout_below="@id/temp_interval"
+        android:layout_marginTop="8dp"
+        android:background="@drawable/circle_button"
+        android:text="@string/weather_alert"
+        android:id="@+id/button_weather_alert"
+        android:textColor="@color/white"
+        />
 
     <LinearLayout
         android:layout_width="match_parent"
@@ -121,6 +175,37 @@
                 android:layout_below="@id/txt_one"
                 android:layout_centerHorizontal="true"/>
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/temp_interval_one"
+                android:layout_below="@id/img_one"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/max_temp_one"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="/"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/min_temp_one"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -148,6 +233,37 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/txt_two"
                 />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/temp_interval_two"
+                android:layout_below="@id/img_two"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/max_temp_two"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="/"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/min_temp_two"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
 
         </RelativeLayout>
 
@@ -177,6 +293,37 @@
                 android:layout_below="@id/txt_three"
                 />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/temp_interval_three"
+                android:layout_below="@id/img_three"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/max_temp_three"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="/"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/min_temp_three"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -204,6 +351,37 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/txt_four"
                 />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/temp_interval_four"
+                android:layout_below="@id/img_four"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/max_temp_four"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="/"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/min_temp_four"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
 
         </RelativeLayout>
 
@@ -233,6 +411,37 @@
                 android:layout_below="@id/txt_five"
                 />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/temp_interval_five"
+                android:layout_below="@id/img_five"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/max_temp_five"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="/"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/min_temp_five"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+
         </RelativeLayout>
 
         <RelativeLayout
@@ -260,6 +469,37 @@
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/txt_six"
                 />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/temp_interval_six"
+                android:layout_below="@id/img_six"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/max_temp_six"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="/"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/min_temp_six"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
 
         </RelativeLayout>
 
@@ -289,6 +529,37 @@
                 android:layout_below="@id/txt_seven"
                 />
 
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:id="@+id/temp_interval_seven"
+                android:layout_below="@id/img_seven"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="4dp">
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/max_temp_seven"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:text="/"
+                    android:textColor="@android:color/white"/>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/min_temp_seven"
+                    android:textSize="12sp"
+                    android:text="--°"
+                    android:textColor="@android:color/white"/>
+
+            </LinearLayout>
+
         </RelativeLayout>
 
     </LinearLayout>
@@ -301,7 +572,8 @@
         android:id="@+id/degree_signal"
         android:layout_above="@+id/hour_temp_chart"
         android:textColor="@android:color/white"
-        android:layout_marginLeft="4dp"/>
+        android:layout_marginLeft="4dp"
+        android:layout_marginBottom="4dp"/>
 
     <com.github.mikephil.charting.charts.LineChart
         android:layout_width="match_parent"
