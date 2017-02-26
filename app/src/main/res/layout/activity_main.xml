@@ -590,7 +590,7 @@
 
         <com.github.mikephil.charting.charts.LineChart
             android:layout_width="match_parent"
-            android:layout_height="140dp"
+            android:layout_height="160dp"
             android:id="@+id/hour_temp_chart"
             />
         <TextView

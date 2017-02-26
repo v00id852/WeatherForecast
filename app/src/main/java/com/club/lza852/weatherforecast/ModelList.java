@@ -109,6 +109,7 @@ public class ModelList {
     }
 
     public void updateRealTimeModel(int index, CaiYunRealTimeModel caiYunRealTimeModel){
+        Log.d(LOG_TAG, "index: " + index+ "," + "size: " + mRealModelList.size());
         if (mRealModelList.size() > index) {
             mRealModelList.remove(index);
             mRealModelList.add(index, caiYunRealTimeModel);

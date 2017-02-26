@@ -84,7 +84,7 @@ public class AddCityActivity extends AppCompatActivity{
                         data.putExtra(UPDATE_LABEL, isUpdateCityList);
                         setResult(MainWeatherViewPagerActivity.RESULT_CODE_ADD_CITY_OK, data);
                         ModelList.getInstance().removeCityInfo(position);
-                        MainWeatherViewPagerActivity.mPagerAdapter.notifyDataSetChanged();
+//                        MainWeatherViewPagerActivity.mPagerAdapter.notifyDataSetChanged();
                         //通知recyclerview的adapter更新
                         mAddCityAdpater.notifyItemRemoved(position);
                     } else {

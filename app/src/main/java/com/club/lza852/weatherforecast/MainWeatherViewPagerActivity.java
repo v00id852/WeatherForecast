@@ -186,8 +186,8 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
             @Override
             public void onPageSelected(int position) {
                     Log.d(LOG_TAG + "_Selected", position + " ");
-                    updateLayoutFromList(position);
                     mCurrentPage = position;
+                    updateLayoutFromList(position);
             }
 
             @Override
@@ -214,12 +214,7 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
                 rotateAnimation.setRepeatCount(Animation.INFINITE);
                 rotateAnimation.setRepeatMode(Animation.RESTART);
                 mRefreshButton.startAnimation(rotateAnimation);
-                if (mCurrentPage == 0) {
-                    //如果是定位城市页面
-                    updateLayoutFromWeb(ModelList.getInstance().getLocationString(mCurrentPage), ModelList.getInstance().getLocationString(mCurrentPage), true, false, true);
-                } else {
-                    updateLayoutFromWeb(ModelList.getInstance().getLocationString(mCurrentPage), ModelList.getInstance().getLocationString(mCurrentPage), true, false, false);
-                }
+                updateLayoutFromWeb(ModelList.getInstance().getLocationString(mCurrentPage), ModelList.getInstance().getLocationString(mCurrentPage), mCurrentPage, true);
             }
         });
 
@@ -256,33 +251,36 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
         //如果之前有记录
         if (mCityInfoPref.contains(PREFES_CITY_LIST_PART + "0")){
             Log.d(LOG_TAG, "Have Pref");
+            //获取城市数量
             int length = mCityInfoPref.getInt(PREFES_CITY_LIST_PART +"length", 0);
             NUM_PAGES = length;
             for (int i = 0; i < length; i++) {
+                    //将信息添加到LocationList中
                     String info = mCityInfoPref.getString(PREFES_CITY_LIST_PART + i,"");
-                    Log.d(LOG_TAG, info);
                     if (!info.equals("")) {
                         String[] sepreatedString = info.split(" ");
                         String locationName = sepreatedString[0];
                         String locationString = sepreatedString[1];
-                        //将记录添加到locationList中
+                        //将城市名添加到locationList中
                         ModelList.getInstance().addLocation(locationName, locationString, i);
                     }
                 }
-            if (ModelList.getInstance().getCitySize() != 0){
-                    //更新界面
-                    //先单独更新城市名，防止网络断开不能获得数据
-                updateCityName(ModelList.getInstance().getLocationName(0), ModelList.getInstance().getLocationString(0), true, true);
-                updateLayoutFromWeb(ModelList.getInstance().getLocationString(0),ModelList.getInstance().getLocationName(0),true,true,true);
+            //更新界面
+            //先单独更新城市名，防止网络断开不能获得数据
+            //先更新第一个城市名
+            updateCityName(ModelList.getInstance().getLocationName(0), ModelList.getInstance().getLocationString(0), 0,true, true);
+            //更新第一个城市数据并显示
+            updateLayoutFromWeb(ModelList.getInstance().getLocationString(0),ModelList.getInstance().getLocationName(0),0,true);
                 for (int i = 1; i < ModelList.getInstance().getCitySize(); i++) {
                     Log.d(LOG_TAG + "_UPDATE", "" + "update" + " " + i);
-                    updateLayoutFromWeb(ModelList.getInstance().getLocationString(i), ModelList.getInstance().getLocationName(i), false, true,false);
+                    //更新之后的城市数据，不显示
+                    updateLayoutFromWeb(ModelList.getInstance().getLocationString(i), ModelList.getInstance().getLocationName(i),i,false);
                 }
-            }
+            //通知消息改变
             mPagerAdapter.notifyDataSetChanged();
         }
 
-        //如果拥有定位权限
+        //如果拥有定位权限，则更新定位信息，如果没有，则等待获得权限后再申请
         if (EasyPermissions.hasPermissions(MainWeatherViewPagerActivity.this, perms)) {
             if (isLocate && LOCATE_FLAG == 0) {
                 getLocation(new AMapLocationListener() {
@@ -294,12 +292,19 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
                                 String longitude = String.valueOf(aMapLocation.getLongitude());
                                 String locationString = longitude + "," + latitude;
                                 String cityName = aMapLocation.getDistrict();
-                                //没有添加过
-                                //更新天气
-                                updateCityName(cityName, locationString, true, true);
-                                updateLayoutFromWeb(longitude + "," + latitude, cityName, true, true, true);
-                                mPagerAdapter.notifyDataSetChanged();
-                                //本次已更新
+                                //如果当前页是第一页
+                                if (mCurrentPage == 0){
+                                    //更新城市名称
+                                    updateCityName(cityName, locationString, 0,true, true);
+                                    //更新定位城市信息
+                                    updateLayoutFromWeb(longitude + "," + latitude, cityName, 0, true);
+                                } else {
+                                    //不是第一页则只更新不显示
+                                    updateCityName(cityName, locationString, 0 ,false, true);
+                                    updateLayoutFromWeb(longitude + "," + latitude, cityName, 0, false);
+                                }
+                                //mPagerAdapter.notifyDataSetChanged();
+                                //本次应用开启，城市已定位，设置flag
                                 LOCATE_FLAG = 1;
                                 stopLocate();
                                 Log.d(LOG_TAG, "Amp Success");
@@ -315,10 +320,8 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
                         }
                     }
                 });
-            } else if (isLocate){
-
             }
-        }
+        } //TODO:申请定位权限
     }
 
     @AfterPermissionGranted(REQUEST_CODE_PERMISSION)
@@ -332,11 +335,20 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
                             String longitude = String.valueOf(aMapLocation.getLongitude());
                             String locationString = longitude + "," + latitude;
                             String cityName = aMapLocation.getDistrict();
-                            //没有添加过
-                            //更新天气
-                            updateCityName(cityName, locationString, true, true);
-                            updateLayoutFromWeb(longitude + "," + latitude, cityName, true, true,true);
-                            mPagerAdapter.notifyDataSetChanged();
+                            //如果当前页是第一页
+                            if (mCurrentPage == 0){
+                                //更新城市名称
+                                updateCityName(cityName, locationString, mCurrentPage,true, true);
+                                //更新定位城市信息
+                                updateLayoutFromWeb(longitude + "," + latitude, cityName, 0, true);
+                            } else {
+                                //不是第一页则只更新不显示
+                                updateCityName(cityName, locationString,mCurrentPage, false, true);
+                                updateLayoutFromWeb(longitude + "," + latitude, cityName, 0, false);
+                            }
+                            //mPagerAdapter.notifyDataSetChanged();
+                            //本次应用开启，城市已定位，设置flag
+                            LOCATE_FLAG = 1;
                             stopLocate();
                             Log.d(LOG_TAG, "Amp Success");
                         } else {
@@ -400,16 +412,19 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
         if (intent.hasExtra(AddCityActivity.INTENT_CLICK_ITEM_POSITION_LABEL)){
             mCurrentPage = intent.getIntExtra(AddCityActivity.INTENT_CLICK_ITEM_POSITION_LABEL,0);
             mPager.setCurrentItem(mCurrentPage);
+            mPagerAdapter.notifyDataSetChanged();
         } else if (intent.hasExtra(SearchActivity.INTENT_LOCATION_NAME_LABEL)){
-            //从SearchActivity打开
+            //从SearchActivity打开,添加新的城市
             String locationString = intent.getStringExtra(SearchActivity.INTENT_LOCATION_STRING_LABEL);
             String locationName = intent.getStringExtra(SearchActivity.INTENT_LOCATION_NAME_LABEL);
             Log.d(LOG_TAG,locationName);
             if (!ModelList.getInstance().hasLocation(locationName)) {
-                updateCityName(locationName, locationString, true, false);
-                updateLayoutFromWeb(locationString, locationName, true, true, false);
                 NUM_PAGES += 1;
                 mCurrentPage = NUM_PAGES - 1;
+
+                updateCityName(locationName, locationString, mCurrentPage, true, false);
+                updateLayoutFromWeb(locationString, locationName, mCurrentPage, true);
+
                 mPagerAdapter.notifyDataSetChanged();
                 mPager.setCurrentItem(mCurrentPage, false);
             }
@@ -424,7 +439,7 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
             BackgroundImageFragment backgroundImageFragment = new BackgroundImageFragment();
             getOrProduceAndSaveRandomNumberList();
             if (mRandomImageNumberList.size() != 0) {
-                Log.d(LOG_TAG, position + "");
+                Log.d(LOG_TAG+"_Adapter", "position: " + position + "");
                 int number = mRandomImageNumberList.get(position);
                 bundle.putInt(BackgroundImageFragment.BUNDLE_NUMBER_LABEL,number);
                 backgroundImageFragment.setArguments(bundle);
@@ -442,7 +457,6 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            Log.d(LOG_TAG + "_Pager", ModelList.getInstance().getCitySize() + "");
             if (ModelList.getInstance().getCitySize() == 0){
                 return 1;
             } else {
@@ -492,8 +506,9 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
         }
     }
 
-    public void updateLayoutFromWeb(final String cityLocation, final String cityName, final Boolean updateLayout, final Boolean isNewCity, final Boolean isLocate){
+    public void updateLayoutFromWeb(final String cityLocation, final String cityName, final int index, final Boolean updateLayout){
 
+        //解决bug：更新的数据和当前页面不符
         Log.d(LOG_TAG, "Update Layout From Web");
 
         //得到实时数据
@@ -502,17 +517,21 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
             public void onResponse(Call<CaiYunRealTimeModel> call, Response<CaiYunRealTimeModel> response) {
                 mCaiYunRealTimeModel = response.body();
                 Log.d(LOG_TAG,"Get" + cityName + "RealInfoModel Succeed");
-                if (isNewCity) {
-                    ModelList.getInstance().updateRealTimeModel(mCurrentPage, mCaiYunRealTimeModel);
-                    updateRealTimeLayout(mCaiYunRealTimeModel,true, updateLayout, isLocate);
-                } else {
-                    View rootView = findViewById(R.id.main_weather_rootview);
-                    Snackbar.make(rootView, R.string.tip_update_success, Snackbar.LENGTH_LONG).show();
-                    //更新列表中的Model
-                    ModelList.getInstance().updateRealTimeModel(mCurrentPage,mCaiYunRealTimeModel);
-                    updateRealTimeLayout(mCaiYunRealTimeModel,false,updateLayout, isLocate);
+                //根界面
+                View rootView = findViewById(R.id.main_weather_rootview);
+                //如果是从searchActivity添加的新的城市
+                //更新或者插入
+                ModelList.getInstance().updateRealTimeModel(index, mCaiYunRealTimeModel);
+                if (updateLayout) {
+                    //如果是在当前页
+                    if (mCurrentPage == index) {
+                        //更新页面显示
+                        updateRealTimeLayout(mCaiYunRealTimeModel);
+                        //弹出提醒
+                        Snackbar.make(rootView, R.string.tip_update_success, Snackbar.LENGTH_SHORT).show();
+                    }
                 }
-                //停止动画
+                //停止刷新动画
                 mRefreshButton.clearAnimation();
             }
             @Override
@@ -530,11 +549,15 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
             public void onResponse(Call<CaiYunForecastModel> call, Response<CaiYunForecastModel> response) {
                 mCaiYunForecastModel = response.body();
                 Log.d(LOG_TAG, "Get" + cityName + " ForecastInfo Succeed");
-                if (isNewCity) {
-                    updateForecastLayout(mCaiYunForecastModel, true, updateLayout, isLocate);
-                }else{
-                    ModelList.getInstance().updateForecastModel(mCurrentPage, mCaiYunForecastModel);
-                    updateForecastLayout(mCaiYunForecastModel,false, updateLayout, isLocate);
+                //更新或插入Model
+                ModelList.getInstance().updateForecastModel(index, mCaiYunForecastModel);
+                if (updateLayout) {
+                    //更新显示界面
+                    //如果是在当前页
+                    if (mCurrentPage == index) {
+                        //更新页面显示
+                        updateForecastLayout(mCaiYunForecastModel);
+                    }
                 }
                 mRefreshButton.clearAnimation();
             }
@@ -549,6 +572,7 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
         });
     }
 
+    //滑动的时候更新函数（从本地更新）
     public void updateLayoutFromList(int indexInList){
         Log.d(LOG_TAG, "Update Layout From List");
         try {
@@ -557,101 +581,93 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
             String cityName = ModelList.getInstance().getLocationName(indexInList);
             String locationString = ModelList.getInstance().getLocationString(indexInList);
             if (indexInList == 0) {
-                updateLayout(caiYunForecastModel, caiYunRealTimeModel, cityName, locationString, false, true, true);
+                //如果更新的是第一个,显示定位图标
+                updateCityName(cityName, locationString, indexInList, true, true);
             } else {
-                updateLayout(caiYunForecastModel, caiYunRealTimeModel, cityName, locationString, false, true, false);
+                //如果更新的不是第一个,不显示定位图标
+                updateCityName(cityName, locationString, indexInList, true, false);
             }
+            updateLayout(caiYunForecastModel, caiYunRealTimeModel);
             mRefreshButton.clearAnimation();
         } catch (IndexOutOfBoundsException e){
+            //之前从服务器更新的数据还没下载完成
             Log.d(LOG_TAG+"_UPDATE", indexInList + " " + "NULL");
             String cityName = ModelList.getInstance().getLocationName(indexInList);
             String locationString = ModelList.getInstance().getLocationString(indexInList);
-            updateNullLayout(cityName, locationString);
-            if (indexInList == 0) {
-//                if (ModelList.getInstance().getForecastModelSize() != ModelList.getInstance().getCitySize())
-                    updateLayoutFromWeb(locationString, cityName, true, false, true);
-            } else {
-                updateLayoutFromWeb(locationString, cityName, true, false, false);
-            }
+            //更新空界面
+            updateNullLayout(cityName, locationString, indexInList);
+            //停止所有请求
+            retrofitClient.cancelCall();
+            updateLayoutFromWeb(locationString, cityName, mCurrentPage, true);
         }
     }
 
-    public void updateLayout(CaiYunForecastModel forecastModel, CaiYunRealTimeModel realTimeModel, String cityName, String locationString, Boolean putInList, Boolean updateLayout, Boolean isLocate){
-        updateCityName(cityName,locationString,putInList, isLocate);
-        updateForecastLayout(forecastModel,putInList, updateLayout, isLocate);
-        updateRealTimeLayout(realTimeModel, putInList,updateLayout, isLocate);
+    public void updateLayout(CaiYunForecastModel forecastModel, CaiYunRealTimeModel realTimeModel){
+        updateForecastLayout(forecastModel);
+        updateRealTimeLayout(realTimeModel);
     }
 
-    public void updateNullLayout(String cityName, String cityLocation){
-        updateCityName(cityName, cityLocation, false, false);
+    public void updateNullLayout(String cityName, String cityLocation, int index){
+        if (index == 0) {
+            updateCityName(cityName, cityLocation, index, true, true);
+        } else {
+            updateCityName(cityName, cityLocation, index, true, false);
+        }
         updateForecastNullLayout();
         updateRealTimeNullLayout();
     }
 
-    public void updateCityName(String cityName, String locationString, Boolean putInList, Boolean isLocate){
-        //isLocate:是否更新的是定位天气，如果是，且putInList为true，就存到第一个
-        if (putInList){
-            if (isLocate) {
-                ModelList.getInstance().updateLocation(0,cityName, locationString);
-            } else {
-                ModelList.getInstance().addLocation(cityName, locationString);
-            }
-        }
-        //如果是定位城市显示定位标志
-        if (isLocate){
-            mLocateIcon.setVisibility(View.VISIBLE);
-        } else {
-            mLocateIcon.setVisibility(View.GONE);
-        }
-        mCityNameText.setText(cityName);
-        mRefreshButton.setAnimation(rotateAnimation);
-        rotateAnimation.setDuration(400);
-        rotateAnimation.setRepeatCount(Animation.INFINITE);
-        rotateAnimation.setRepeatMode(Animation.RESTART);
-        mRefreshButton.startAnimation(rotateAnimation);
-        Log.d("CityName",cityName);
-    }
-
-    public void updateRealTimeLayout(CaiYunRealTimeModel realTimeModel, Boolean putInList, Boolean updateLayout, Boolean isLocate, int index){
-
-        if (putInList) {
-            if (isLocate){
-                ModelList.getInstance().updateRealTimeModel(0,realTimeModel);
-            } else {
-                ModelList.getInstance().addRealTimeModel(index,realTimeModel);
-            }
-        }
+    public void updateCityName(String cityName, String locationString, int index, Boolean updateLayout, Boolean isLocate){
+        //如果是定位城市显示定位标志, 并更新城市名，如果是新添加的城市
+        if (isLocate) ModelList.getInstance().updateLocation(0, cityName, locationString);
+        else ModelList.getInstance().updateLocation(index, cityName, locationString);
         if (updateLayout) {
-            //更新实时天气
-            double nowTemp = realTimeModel.getResult().getTemperature();
-            temp.setText(String.format("%d°", Math.round(nowTemp)));
-            String weatherCode = realTimeModel.getResult().getSkycon();
-            //天气状况
-            weatherStatus.setText(Utils.weatherCode2String(weatherCode));
-            Log.d(LOG_TAG, "Update ForecastModel Success");
-        }
-    }
-
-    public void updateRealTimeLayout(CaiYunRealTimeModel realTimeModel, Boolean putInList, Boolean updateLayout, Boolean isLocate){
-
-        if (putInList) {
+            mCityNameText.setText(cityName);
+            mRefreshButton.setAnimation(rotateAnimation);
+            rotateAnimation.setDuration(400);
+            rotateAnimation.setRepeatCount(Animation.INFINITE);
+            rotateAnimation.setRepeatMode(Animation.RESTART);
+            mRefreshButton.startAnimation(rotateAnimation);
+            Log.d("CityName", cityName);
             if (isLocate){
-                ModelList.getInstance().updateRealTimeModel(0,realTimeModel);
+                mLocateIcon.setVisibility(View.VISIBLE);
             } else {
-                ModelList.getInstance().addRealTimeModel(realTimeModel);
+                mLocateIcon.setVisibility(View.GONE);
             }
         }
-        if (updateLayout) {
-            //更新实时天气
-            double nowTemp = realTimeModel.getResult().getTemperature();
-            temp.setText(String.format("%d°", Math.round(nowTemp)));
-            String weatherCode = realTimeModel.getResult().getSkycon();
-            //天气状况
-            weatherStatus.setText(Utils.weatherCode2String(weatherCode));
-            Log.d(LOG_TAG, "Update ForecastModel Success");
-        }
     }
 
+//    public void updateRealTimeLayout(CaiYunRealTimeModel realTimeModel, Boolean putInList, Boolean updateLayout, Boolean isLocate, int index){
+//
+//        if (putInList) {
+//            if (isLocate){
+//                ModelList.getInstance().updateRealTimeModel(0,realTimeModel);
+//            } else {
+//                ModelList.getInstance().addRealTimeModel(index,realTimeModel);
+//            }
+//        }
+//        if (updateLayout) {
+//            //更新实时天气
+//            double nowTemp = realTimeModel.getResult().getTemperature();
+//            temp.setText(String.format("%d°", Math.round(nowTemp)));
+//            String weatherCode = realTimeModel.getResult().getSkycon();
+//            //天气状况
+//            weatherStatus.setText(Utils.weatherCode2String(weatherCode));
+//            Log.d(LOG_TAG, "Update ForecastModel Success");
+//        }
+//    }
+
+    public void updateRealTimeLayout(CaiYunRealTimeModel realTimeModel){
+
+        //更新实时天气
+        double nowTemp = realTimeModel.getResult().getTemperature();
+        temp.setText(String.format("%d°", Math.round(nowTemp)));
+        String weatherCode = realTimeModel.getResult().getSkycon();
+        //天气状况
+        weatherStatus.setText(Utils.weatherCode2String(weatherCode));
+        Log.d(LOG_TAG, "Update ForecastModel Success");
+
+    }
 
     public void updateRealTimeNullLayout(){
         temp.setText("N/A°");
@@ -672,16 +688,7 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
         mHourChart.clear();
     }
 
-    public void updateForecastLayout(CaiYunForecastModel forecastModel, Boolean putInList, Boolean updateLayout, Boolean isLocate){
-        if (putInList) {
-            if (isLocate){
-                ModelList.getInstance().updateForecastModel(0, forecastModel);
-            } else {
-                //预报Model存入列表
-                ModelList.getInstance().addForecastModel(forecastModel);
-            }
-        }
-        if (updateLayout) {
+    public void updateForecastLayout(CaiYunForecastModel forecastModel){
             //当前最高最低温度
             Double maxNowTemp = forecastModel.getResult().getDaily().getTemperature().get(0).getMax();
             Double minNowTemp = forecastModel.getResult().getDaily().getTemperature().get(0).getMin();
@@ -746,6 +753,9 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
                 }
             });
             yRightAxis.setEnabled(false);
+            yLeftAxis.setLabelCount(5);
+            yLeftAxis.setSpaceBottom(0.05f);
+            yLeftAxis.setSpaceTop(0.05f);
             //圆滑曲线
             lineDataSet.setMode(LineDataSet.Mode.CUBIC_BEZIER);
             //取消数值显示
@@ -766,7 +776,6 @@ public class MainWeatherViewPagerActivity extends AppCompatActivity {
             mHourChart.setTouchEnabled(false);
             mHourChart.setData(lineData);
             mHourChart.invalidate();
-        }
     }
 
     //定位函数，获得经纬度

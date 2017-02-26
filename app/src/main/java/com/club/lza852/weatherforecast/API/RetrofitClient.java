@@ -5,6 +5,8 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
+import java.util.ArrayList;
+
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -20,6 +22,8 @@ public class RetrofitClient {
     private static String BASE_URL = "https://api.caiyunapp.com";
     //彩云天气预报token
     private static String wftoken = "E-4s4HJLOrf3EcWR";
+
+    private static ArrayList<Call> mCallArrayList = new ArrayList<>();
 
     //获取天气预报信息
     public static void getForecastInfo(String cityLocation, Callback<CaiYunForecastModel> mCallback){
@@ -52,6 +56,7 @@ public class RetrofitClient {
         }
 
         mForecastCall.enqueue(mCallback);
+        mCallArrayList.add(mForecastCall);
     }
 
     //获取实时天气信息
@@ -84,7 +89,14 @@ public class RetrofitClient {
             };
         }
         mRealTimeCall.enqueue(mCallback);
+        mCallArrayList.add(mRealTimeCall);
     }
 
+    public static void cancelCall(){
+        for (Call call: mCallArrayList){
+            call.cancel();
+        }
+        mCallArrayList.clear();
+    }
 
 }
