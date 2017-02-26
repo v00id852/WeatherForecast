@@ -1,13 +1,8 @@
 package com.club.lza852.weatherforecast;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.graphics.drawable.GradientDrawable;
-import android.graphics.drawable.ShapeDrawable;
-import android.graphics.drawable.shapes.RoundRectShape;
 import android.support.v4.content.ContextCompat;
-import android.support.v7.widget.CardView;
 import android.util.Log;
 
 /**
@@ -43,28 +38,28 @@ public class Utils {
             case "CLEAR_DAY":
             case "CLEAR_NIGHT":
                 //晴天
-                return ContextCompat.getDrawable(mContext,R.drawable.sun);
+                return ContextCompat.getDrawable(mContext,R.drawable.weather_sun);
             case "PARTLY_CLOUDY_DAY":
             case "PARTLY_CLOUDY_NIGHT":
-                return ContextCompat.getDrawable(mContext,R.drawable.partly_cloudy);
+                return ContextCompat.getDrawable(mContext,R.drawable.weather_few_clouds);
             case "CLOUDY":
                 //多云
-                return ContextCompat.getDrawable(mContext,R.drawable.cloudy);
+                return ContextCompat.getDrawable(mContext,R.drawable.weather_clouds);
             case "RAIN":
-                return ContextCompat.getDrawable(mContext,R.drawable.rain);
+                return ContextCompat.getDrawable(mContext,R.drawable.weather_rain_day);
             case "SNOW":
-                return ContextCompat.getDrawable(mContext,R.drawable.snow);
+                return ContextCompat.getDrawable(mContext,R.drawable.weather_snow);
             case "WINDY":
-                return ContextCompat.getDrawable(mContext,R.drawable.wind);
+                return ContextCompat.getDrawable(mContext,R.drawable.weather_wind);
             case "FOG":
-                return ContextCompat.getDrawable(mContext,R.drawable.fog);
+                return ContextCompat.getDrawable(mContext,R.drawable.weather_fog);
             case "HAZE":
-                return ContextCompat.getDrawable(mContext,R.drawable.haze);
+                return ContextCompat.getDrawable(mContext,R.drawable.weather_haze);
             case "SLEET":
-                return ContextCompat.getDrawable(mContext,R.drawable.sleet);
+                return ContextCompat.getDrawable(mContext,R.drawable.weather_snow_rain);
             default:
                 //默认显示晴天
-                return ContextCompat.getDrawable(mContext,R.drawable.sun);
+                return ContextCompat.getDrawable(mContext,R.drawable.weather_sun);
         }
     }
 
@@ -85,44 +80,29 @@ public class Utils {
     }
 
     public static String tempDouble2String(Double temp){
-        return String.format("%d°",Math.round(temp));
+        return String.format("%d",Math.round(temp));
     }
 
     public static String getAqiString(double aqi){
-        if (aqi <= 50){
-            return String.format("%d 空气优秀", (int)aqi);
-        } else if (aqi <= 100) {
-            return String.format("%d 空气良好", (int)aqi);
-        } else if (aqi <= 150){
-            return String.format("%d 轻度污染", (int)aqi);
-        } else if (aqi <= 200){
-            return String.format("%d 中度污染", (int)aqi);
-        } else if (aqi <= 300){
-            return String.format("%d 重度污染", (int)aqi);
-        }
-        return "";
+        return String.format("%d", (int)aqi);
     }
 
-    public static Drawable getAqiDrawable(Context mContext, double aqi) {
+    public static int getAqiDrawable(Context mContext, double aqi) {
         int aqiInt = (int)aqi;
         Log.d("aqi",String.valueOf(aqiInt));
-        GradientDrawable gradientDrawable = new GradientDrawable();
-        gradientDrawable.setCornerRadius(20);
 
         if (aqi <= 50){
             //绿色
-            gradientDrawable.setColor(ContextCompat.getColor(mContext,R.color.green));
+            return ContextCompat.getColor(mContext,R.color.green);
         } else if (aqi <= 100){
             //黄色
-            gradientDrawable.setColor(ContextCompat.getColor(mContext,R.color.yellow));
+            return ContextCompat.getColor(mContext,R.color.yellow);
         } else if (aqi <= 150){
             //橘色
-            Log.d("color","orange");
-            gradientDrawable.setColor(ContextCompat.getColor(mContext, R.color.orange));
+            return ContextCompat.getColor(mContext,R.color.orange);
         } else {
             //红色
-           gradientDrawable.setColor(ContextCompat.getColor(mContext, R.color.red));
+            return ContextCompat.getColor(mContext,R.color.red);
         }
-        return gradientDrawable;
     }
 }

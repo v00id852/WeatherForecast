@@ -3,24 +3,20 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:layout_marginBottom="0dp"
-    android:id="@+id/main_weather_layout">
+    android:id="@+id/main_weather_rootview">
 
     <android.support.v4.view.ViewPager
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:id="@+id/img_background_view_pager"
-        >
+        />
 
-    </android.support.v4.view.ViewPager>
-
-    <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-                    android:orientation="vertical"
+    <RelativeLayout android:orientation="vertical"
                     android:layout_width="match_parent"
                     android:layout_height="?attr/actionBarSize"
-                    android:id="@+id/action_bar"
-                    android:layout_marginRight="8dp"
+                    android:id="@+id/action_bar_part"
                     android:background="@android:color/transparent"
-                    >
+        >
 
         <ImageView
             android:layout_width="wrap_content"
@@ -30,6 +26,7 @@
             android:layout_centerVertical="true"
             android:id="@+id/actionbar_add_city"
             />
+
         <me.relex.circleindicator.CircleIndicator
             android:layout_width="wrap_content"
             android:layout_height="36dp"
@@ -40,13 +37,22 @@
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:src="@drawable/ic_refresh"
+            android:layout_toLeftOf="@+id/setting"
+            android:id="@+id/refresh"
+            android:layout_marginRight="8dp"
+            android:layout_centerVertical="true"/>
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:layout_alignParentRight="true"
             android:layout_centerVertical="true"
             android:src="@drawable/setting"
+            android:layout_marginRight="8dp"
             android:id="@+id/setting"/>
 
     </RelativeLayout>
-
 
         <TextView
             android:layout_width="wrap_content"
@@ -57,7 +63,7 @@
             android:id="@+id/city_name"
             android:layout_centerVertical="true"
             android:textColor="@android:color/white"
-            android:layout_below="@id/action_bar"
+            android:layout_below="@id/action_bar_part"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="16dp"/>
 
@@ -167,8 +173,8 @@
                 />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:id="@+id/img_one"
                 android:layout_marginLeft="6dp"
                 android:layout_marginRight="6dp"
@@ -183,6 +189,7 @@
                 android:layout_below="@id/img_one"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="4dp">
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -190,6 +197,7 @@
                     android:textSize="12sp"
                     android:text="--°"
                     android:textColor="@android:color/white"/>
+
                 <TextView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -227,8 +235,8 @@
                 />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:id="@+id/img_two"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/txt_two"
@@ -286,8 +294,8 @@
                 />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:id="@+id/img_three"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/txt_three"
@@ -345,8 +353,8 @@
                 />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:id="@+id/img_four"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/txt_four"
@@ -404,8 +412,8 @@
                 />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:id="@+id/img_five"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/txt_five"
@@ -463,8 +471,8 @@
                 />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:id="@+id/img_six"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/txt_six"
@@ -522,8 +530,8 @@
                 />
 
             <ImageView
-                android:layout_width="24dp"
-                android:layout_height="24dp"
+                android:layout_width="32dp"
+                android:layout_height="32dp"
                 android:id="@+id/img_seven"
                 android:layout_centerHorizontal="true"
                 android:layout_below="@id/txt_seven"
@@ -564,22 +572,36 @@
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="°C"
-        android:textSize="12sp"
-        android:id="@+id/degree_signal"
-        android:layout_above="@+id/hour_temp_chart"
-        android:textColor="@android:color/white"
-        android:layout_marginLeft="4dp"
-        android:layout_marginBottom="4dp"/>
-
-    <com.github.mikephil.charting.charts.LineChart
+    <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="160dp"
+        android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:id="@+id/hour_temp_chart"
-        />
+        android:id="@+id/hour_temp_chart_part">
+        <!--<TextView-->
+            <!--android:layout_width="wrap_content"-->
+            <!--android:layout_height="wrap_content"-->
+            <!--android:text="°C"-->
+            <!--android:textSize="12sp"-->
+            <!--android:id="@+id/degree_signal"-->
+            <!--android:textColor="@android:color/white"-->
+            <!--android:layout_above="@+id/hour_temp_chart"-->
+            <!--android:layout_marginLeft="4dp"-->
+            <!--android:layout_marginBottom="4dp"/>-->
+
+        <com.github.mikephil.charting.charts.LineChart
+            android:layout_width="match_parent"
+            android:layout_height="140dp"
+            android:id="@+id/hour_temp_chart"
+            />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:textSize="10sp"
+            android:text="未来24小时温度走势图"
+            android:layout_marginRight="16dp"
+            android:textColor="@color/white"
+            />
+    </RelativeLayout>
 
 </RelativeLayout>

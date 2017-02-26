@@ -12,6 +12,7 @@
     <color name="colorButtonFontUnselected">#000000</color>
     <color name="colorButtonFontSelected">#BDBDBD</color>
     <color name="colorProgressBarBackground">#9E9E9E</color>
+    <color name="grey">#9E9E9E</color>
     <color name="white">#ffffff</color>
     <color name="colorImgForeGround">#30000000</color>
     <color name="colorActionBarBackground">#00000000</color>
@@ -20,7 +21,7 @@
     <color name="green">#81C784</color>
     <color name="black">#000000</color>
     <color name="orange">#FF9800</color>
-    <color name="yellow">#FFFF70</color>
+    <color name="yellow">#FDD835</color>
     <color name="red">#FF0000</color>
     <color name="colorItemCityNameBackground">#007EA9</color>
     <color name="colorItemBackground">#00B6F1</color>

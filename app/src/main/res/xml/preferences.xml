@@ -3,37 +3,53 @@
     xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout="@layout/item_setting_item"
     >
-
-    <CheckBoxPreference
-        android:key="setting_open_locate"
-        android:title="@string/setting_open_locate"
-        android:summary="@string/setting_summary_open_locate"
-        android:layout="@layout/item_setting_item"
-        />
-    <CheckBoxPreference
-        android:key="setting_auto_update_weather"
-        android:title="@string/setting_auto_update_title"
-        android:layout="@layout/item_setting_item"/>
-
-    <CheckBoxPreference
-        android:key="setting_open_alert"
-        android:title="@string/setting_weather_alert"
-        android:layout="@layout/item_setting_item"/>
+    <PreferenceCategory
+        android:layout="@layout/item_setting_group"
+        android:title="通用设置"
+        >
+        <CheckBoxPreference
+            android:key="setting_open_locate"
+            android:title="@string/setting_open_locate"
+            android:defaultValue="true"
+            android:layout="@layout/item_setting_item"
+            />
+        <CheckBoxPreference
+            android:key="setting_open_alert"
+            android:defaultValue="false"
+            android:title="@string/setting_weather_alert"
+            android:layout="@layout/item_setting_item"
+          />
+        </PreferenceCategory>
 
     <PreferenceCategory
         android:layout="@layout/item_setting_group"
-        android:title="@string/setting_city">
-
-        <Preference
+        android:key="setting_auto_update"
+        android:title="@string/setting_auto_update_title"
+        >
+        <CheckBoxPreference
+            android:key="setting_auto_update_weather"
+            android:title="@string/setting_auto_update_open"
             android:layout="@layout/item_setting_item"
-            android:title="@string/setting_add_city">
-            <intent android:action="android.intent.action.MAIN"
-                    android:targetPackage=""/>
-        </Preference>
-        <Preference
-            android:layout="@layout/item_setting_item"
-            android:title="@string/setting_remove_city"/>
+            android:defaultValue="false"
+          />
 
+        <CheckBoxPreference
+            android:key="setting_auto_update_freq_1h"
+            android:dependency="setting_auto_update_weather"
+            android:layout="@layout/item_setting_item"
+            android:title="@string/setting_auto_update_1h"/>
+
+        <CheckBoxPreference
+            android:key="setting_auto_update_freq_3h"
+            android:dependency="setting_auto_update_weather"
+            android:layout="@layout/item_setting_item"
+            android:title="@string/setting_auto_update_3h"/>
+
+        <CheckBoxPreference
+            android:key="setting_auto_update_freq_6h"
+            android:dependency="setting_auto_update_weather"
+            android:layout="@layout/item_setting_item"
+            android:title="@string/setting_auto_update_6h"/>
     </PreferenceCategory>
 
     <PreferenceCategory
@@ -49,6 +65,5 @@
 
 
     </PreferenceCategory>
-
 
 </PreferenceScreen>

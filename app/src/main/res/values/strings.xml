@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">WeatherForecast</string>
+    <string name="app_name">简约天气</string>
     <string name="temperature_button">温度</string>
     <string name="humidity_button">湿度</string>
     <string name="pm25_label">PM2.5(μg/cm³)</string>
@@ -15,15 +15,26 @@
     <string name="permission">天气预报</string>
     <string name="weather_alert">天气预警</string>
     <string name="locate_failed">定位失败,请检查网络连接或定位权限是否开启</string>
+    <string name="setting_actionbar_title">设置</string>
     <string name="setting_common">通用设置</string>
     <string name="setting_open_locate">开启定位</string>
-    <string name="setting_summary_open_locate">当前地区:</string>
-    <string name="setting_auto_update_title">自动更新天气</string>
+    <string name="setting_auto_update_title">天气更新设置</string>
+    <string name="setting_auto_update_open">自动更新天气</string>
+    <string name="setting_auto_update_1h">每一小时</string>
+    <string name="setting_auto_update_3h">每三小时</string>
+    <string name="setting_auto_update_6h">每六小时</string>
     <string name="setting_notification_bar">通知栏天气设置</string>
     <string name="setting_weather_alert">天气预警通知提醒</string>
     <string name="setting_city">城市设置</string>
-    <string name="setting_add_city">添加城市</string>
-    <string name="setting_remove_city">删除城市</string>
     <string name="setting_others">其他</string>
     <string name="setting_about">关于</string>
+    <string name="search_hint">搜索城市</string>
+    <string name="add_city_label">城市管理</string>
+    <string name="refresh">刷新</string>
+    <string name="warning_only_one_city">只有一个城市，不能删除哦！</string>
+    <string name="warning_network_error">网络出现问题，请重试！</string>
+    <string name="warning_full_city">已添加六个城市，不能再添加啦！</string>
+    <string name="warning_location_city">定位城市不能删除哦！</string>
+    <string name="tip_update_success">更新成功</string>
+
 </resources>

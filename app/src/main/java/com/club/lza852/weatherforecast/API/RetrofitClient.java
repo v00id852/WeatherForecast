@@ -5,8 +5,6 @@ import android.util.Log;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import java.util.Map;
-
 import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
@@ -22,12 +20,9 @@ public class RetrofitClient {
     private static String BASE_URL = "https://api.caiyunapp.com";
     //彩云天气预报token
     private static String wftoken = "E-4s4HJLOrf3EcWR";
-    //和风天气预报token
-    private static String hefengtoken = "752d4ffa96744528a91a880a60c76661";
-    private static String lokey = "e998272a2c9692254075af57b88ce157";
 
     //获取天气预报信息
-    public static void getForecastInfo(String cityLocation, Map<String, String> queryMap, Callback<CaiYunForecastModel> mCallback){
+    public static void getForecastInfo(String cityLocation, Callback<CaiYunForecastModel> mCallback){
         Gson gson = new GsonBuilder()
                 .setLenient()
                 .create();
@@ -90,4 +85,6 @@ public class RetrofitClient {
         }
         mRealTimeCall.enqueue(mCallback);
     }
+
+
 }
